@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+// 实例化加载器gltf
+const gltfLoader = new GLTFLoader();
+// 加载模型
+gltfLoader.load(
+  // 模型路径
+  "./model/Duck.glb",
+  // 加载完成回调
+  (gltf) => {
+    console.log(gltf);
+    viewer.scene.add(gltf.scene);
+    let duckMesh = gltf.scene.getObjectByName("LOD3spShape");
+    let duckGeometry = duckMesh.geometry;
+
+    // 计算包围盒
+    duckGeometry.computeBoundingBox();
+    // 设置几何体居中
+    duckGeometry.center();
+    // 获取duck包围盒
+    let duckBox = duckGeometry.boundingBox;
+
+    // 更新世界矩阵
+    duckMesh.updateWorldMatrix(true, true);
+    // 更新包围盒
+    duckBox.applyMatrix4(duckMesh.matrixWorld);
+    // 获取包围盒中心点
+    let center = duckBox.getCenter(new THREE.Vector3());
+    console.log(center);
+    // 创建包围盒辅助器
+    let boxHelper = new THREE.Box3Helper(duckBox, 0xffff00);
+    // 添加包围盒辅助器
+    viewer.scene.add(boxHelper);
+  }
+);
+
+// 加载环境贴图
+// 不加载环境贴图就没有光，鸭子就是全黑的
+let rgbeLoader = new RGBELoader();
+rgbeLoader.load("./texture/Alex_Hart-Nature_Lab_Bones_2k.hdr", (envMap) => {
+  envMap.mapping = THREE.EquirectangularReflectionMapping;
+  // 设置环境贴图
+  viewer.scene.environment = envMap;
+  // viewer.scene.background = envMap;
+});
+
+const gui = new dat.GUI()
+
+</script>
+</html>

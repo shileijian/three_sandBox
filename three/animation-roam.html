@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+  <div id="domTest" style="width: 100px;height: 40px;background: #ffffff;">1111</div>
+  <div id="domTest1" style="width: 50px;height: 40px;background: #000;">1111</div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+  const roam = viewer.animation.createRoam({
+    src: '/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf',
+    speed: 6,
+    view: 0,
+    positions: [
+      {x: 0,y:0,z:0},
+      {x: 20,y:0,z:40},
+      {x: 60,y:0,z:20},
+    ],
+  })
+  // roam.start()
+  window.roam = roam
+  // roam.changeListener((progress) => {
+  //   console.log(progress)
+  // })
+  // roam.endListener(() => {
+  //   console.log('结束');
+  // })
+  const start = () => {
+    roam.start()
+  }
+  const pause = () => {
+    roam.pause()
+  }
+  const remove = () => {
+    roam.remove()
+  }
+
+  const guiSetting = {
+    start,
+    pause,
+    remove,
+    view: 0
+  }
+
+  const gui = new dat.GUI()
+  gui.add(guiSetting, 'start').name('开始')
+  gui.add(guiSetting, 'pause').name('暂停')
+  gui.add(guiSetting, 'view', {
+    '自由视角': 0,
+    '第一人称': 1,
+    '第三人称': 3
+  }).onChange((v) => {
+    roam.setView(v)
+  }).name('视角切换')
+  gui.add(guiSetting, 'remove').name('移除')
+</script>
+</html>

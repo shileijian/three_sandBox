@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+    "rotation": {
+        "x": -18.41781657588674,
+        "y": 7.896708319740073,
+        "z": 2.6194690523500257
+    },
+    "position": {
+        "x": 2.5425201365955954,
+        "y": 5.791473216999441,
+        "z": 17.391752522453462
+    }
+}
+  })
+
+
+const gui = new dat.GUI()
+
+// 创建长方体
+const boxGeometry = new THREE.BoxGeometry(1, 1, 100);
+const boxMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00ff00,
+});
+const box = new THREE.Mesh(boxGeometry, boxMaterial);
+viewer.scene.add(box);
+
+// 创建场景fog
+viewer.scene.fog = new THREE.Fog(0x999999, 0.1, 50);
+// 创建场景指数fog
+// scene.fog = new THREE.FogExp2(0x999999, 0.1);
+viewer.scene.background = new THREE.Color(0x999999);
+
+</script>
+</html>

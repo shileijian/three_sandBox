@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+
+const testVertexShader = `
+uniform vec2 uFrequency;
+uniform float uTime;
+ 
+varying vec2 vUv;
+varying float vElevation;
+ 
+void main()
+{
+    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+ 
+    float elevation = sin(modelPosition.x * uFrequency.x - uTime) * 0.1;
+    elevation += sin(modelPosition.y * uFrequency.y - uTime) * 0.1;
+ 
+    modelPosition.z += elevation * 10.0;
+ 
+    vec4 viewPosition = viewMatrix * modelPosition;
+    vec4 projectedPosition = projectionMatrix * viewPosition;
+ 
+    gl_Position = projectedPosition;
+ 
+    vUv = uv;
+    vElevation = elevation;
+}
+`
+
+const testFragmentShader = `
+uniform vec3 uColor;
+uniform sampler2D uTexture;
+ 
+varying vec2 vUv;
+varying float vElevation;
+ 
+void main()
+{
+    vec4 textureColor = texture2D(uTexture, vUv);
+    textureColor.rgb *= vElevation * 2.0 + 0.65;
+    gl_FragColor = textureColor;
+    // gl_FragColor = vec4(vUv, 1.0, 1.0);
+}
+`
+// 创建纹理加载器对象
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load("./texture/联合国国旗.png");
+
+  const material = new THREE.ShaderMaterial({
+    vertexShader: testVertexShader,
+    fragmentShader: testFragmentShader,
+    side: THREE.DoubleSide,
+    uniforms:
+    {
+        uFrequency: { value: new THREE.Vector2(1, 0) },
+        uTime: { value: 0 },
+        uColor: { value: new THREE.Color('orange') },
+        uTexture: { value: texture }
+    }
+})
+
+// 创建平面
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(15, 10, 64, 64),
+  material
+);
+floor.position.setY(20)
+const clock = new THREE.Clock();
+function animate(t) {
+  const elapsedTime = clock.getElapsedTime();
+  //   console.log(elapsedTime);
+  material.uniforms.uTime.value = elapsedTime;
+  requestAnimationFrame(animate);
+  // 使用渲染器渲染相机看这个场景的内容渲染出来
+  // renderer.render(scene, camera);
+}
+
+
+
+console.log(floor);
+viewer.scene.add(floor);
+
+const gui = new dat.GUI()
+animate();
+</script>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+  const polygon = viewer.geometry.createPolygon({
+    id: 'polygon*',
+    material: { 
+      color: '#ffff00'
+    },
+    positions: [
+      {x: 0,y: 0,z:0},
+      {x: 0,y: 20,z:0},
+      {x: 10,y: 30,z:0},
+      {x: 20,y: 20,z:0},
+      {x: 30,y: 0,z:0},
+    ],
+  })
+  viewer.add(polygon)
+
+  viewer.add(viewer.geometry.createPolygon({
+    id: 'polygon*',
+    material: { 
+      color: '#ffff00'
+    },
+    positions: [
+      {x: 50,y: 0,z:0},
+      {x: 0,y: 20,z:10},
+      {x: 30,y: 30,z:20},
+    ],
+  }))
+
+  polygon.click((data) => {
+    console.log('click',data)
+  })
+  polygon.rightClick((data) => {
+    console.log('rightClick',data)
+  })
+  const show = () => {
+    viewer.show('polygon*')
+  }
+  const hide = () => {
+    viewer.hide('polygon*')
+  }
+  const remove = () => {
+    viewer.remove('polygon*')
+  }
+
+  const guiSetting = {
+    show,
+    hide,
+    remove,
+  }
+
+  const gui = new dat.GUI()
+  gui.add(guiSetting, 'show').name('显示')
+  gui.add(guiSetting, 'hide').name('隐藏')
+  gui.add(guiSetting, 'remove').name('移除')
+</script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+
+// 实例化加载器gltf
+const gltfLoader = new GLTFLoader();
+// 加载模型
+gltfLoader.load(
+  // 模型路径
+  "./model/Duck.glb",
+  // 加载完成回调
+  (gltf) => {
+    console.log(gltf);
+    viewer.scene.add(gltf.scene);
+
+    let duckMesh = gltf.scene.getObjectByName("LOD3spShape");
+    let matcapTexture = new THREE.TextureLoader().load(
+      "./texture/matcaps/54584E_B1BAC5_818B91_A7ACA3-512px.png"
+    );
+    let preMaterial = duckMesh.material;
+    duckMesh.material = new THREE.MeshMatcapMaterial({
+      matcap: matcapTexture,
+      map: preMaterial.map,
+    });
+  }
+);
+const gui = new dat.GUI()
+
+</script>
+</html>

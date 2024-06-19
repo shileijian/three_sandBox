@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+
+  // 创建绘制纹理贴图的画布
+function createImage() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${
+    Math.random() * 255
+  })`;
+  ctx.fillRect(0, 0, 256, 256);
+  return canvas;
+}
+
+  function render() {
+  //创建球
+  const sphereGeometry = new THREE.SphereGeometry(
+    2,
+    Math.random() * 64,
+    Math.random() * 32
+  );
+
+  //  创建canvas纹理贴图
+  const texture = new THREE.CanvasTexture(createImage());
+  const sphereMaterial = new THREE.MeshBasicMaterial({
+    map: texture,
+    // color: Math.random() * 0xffffff,
+  });
+  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  viewer.scene.add(sphere);
+
+  // controls.update();
+  viewer.renderer.render(viewer.scene, viewer.camera);
+  //   渲染下一帧的时候就会调用render函数
+  requestAnimationFrame(render);
+
+  // 清除场景中的物体
+  viewer.scene.remove(sphere);
+
+  // // 清除几何体
+  sphereGeometry.dispose();
+  // 清除材质
+  sphereMaterial.dispose();
+  // // 清除纹理贴图
+  texture.dispose();
+}
+
+render();
+
+const gui = new dat.GUI()
+
+</script>
+</html>

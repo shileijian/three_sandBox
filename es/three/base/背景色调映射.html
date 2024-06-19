@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+
+
+const gui = new dat.GUI()
+
+// rgbeLoader 加载hdr贴图
+let rgbeLoader = new RGBELoader();
+rgbeLoader.load(
+  "./texture/opt/memorial/Alex_Hart-Nature_Lab_Bones_2k.hdr",
+  (envMap) => {
+    // 设置球形贴图
+    envMap.mapping = THREE.EquirectangularReflectionMapping;
+    // 设置环境贴图
+    viewer.scene.background = envMap;
+    // 设置环境贴图
+    viewer.scene.environment = envMap;
+  }
+);
+
+// 设置色调映射
+viewer.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+// 设置色调映射曝光度
+viewer.renderer.toneMappingExposure = 1;
+
+gui.add(viewer.renderer, "toneMapping", {
+    // 无色调映射
+  '无色调映射': THREE.NoToneMapping,
+  // 线性色调映射
+  '线性色调映射': THREE.LinearToneMapping,
+  // Reinhard色调映射。这是一种更复杂的色调映射方式，可以更好地处理高亮度的区域。它根据整个图像的平均亮度来调整每个像素的亮度。
+  Reinhard: THREE.ReinhardToneMapping,
+  // Cineon色调映射。这种方法起源于电影行业，尝试模仿电影胶片的颜色响应，使得图像在颜色上看起来更富有电影感。
+  Cineon: THREE.CineonToneMapping,
+  // ACES Filmic色调映射。这是一种模仿电影行业中常用的色调映射算法，可以产生类似于电影的视觉效果。
+  ACESFilmic: THREE.ACESFilmicToneMapping,
+})
+
+gui.add(viewer.renderer, "toneMappingExposure", 0, 3, 0.1);
+
+</script>
+</html>

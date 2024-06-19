@@ -1,0 +1,14 @@
+import * as o from "../../node_modules/.pnpm/registry.npmmirror.com_three@0.158.0/node_modules/three/build/three.module.mjs";
+import r from "./three/main.mjs";
+import { RGBELoader as m } from "../../node_modules/.pnpm/registry.npmmirror.com_three@0.158.0/node_modules/three/examples/jsm/loaders/RGBELoader.mjs";
+import { GLTFLoader as d } from "../../node_modules/.pnpm/registry.npmmirror.com_three@0.158.0/node_modules/three/examples/jsm/loaders/GLTFLoader.mjs";
+import { DRACOLoader as i } from "../../node_modules/.pnpm/registry.npmmirror.com_three@0.158.0/node_modules/three/examples/jsm/loaders/DRACOLoader.mjs";
+import { OrbitControls as t } from "../../node_modules/.pnpm/registry.npmmirror.com_three@0.158.0/node_modules/three/examples/jsm/controls/OrbitControls.mjs";
+import { TransformControls as w } from "../../node_modules/.pnpm/registry.npmmirror.com_three@0.158.0/node_modules/three/examples/jsm/controls/TransformControls.mjs";
+window.THREE = o;
+window.slj3d = r;
+window.RGBELoader = m;
+window.GLTFLoader = d;
+window.DRACOLoader = i;
+window.OrbitControls = t;
+window.TransformControls = w;

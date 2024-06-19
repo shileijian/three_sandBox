@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+  const box = viewer.geometry.createBox({
+    id: 'box*',
+    width: 10,
+    height: 10,
+    depth: 5,
+    material: {color: '#ffff00'},
+    position: {x: 0,y: 0,z:20},
+    rotation: {x:0,y:0,z:0},
+    scale: 2
+  })
+  viewer.add(box)
+  const sprite = viewer.geometry.createDom({
+    id: 'dom*',
+    dom: document.getElementById('domTest'),
+    scale: 0.3,
+    position: {x: 0,y: 0,z:20}
+  })
+  viewer.add(sprite)
+  box.click((data) => {
+    console.log('click',data)
+  })
+  box.rightClick((data) => {
+    console.log('rightClick',data)
+  })
+  const show = () => {
+    viewer.show('box*')
+  }
+  const hide = () => {
+    viewer.hide('box*')
+  }
+  const remove = () => {
+    viewer.remove('box*')
+  }
+
+  const guiSetting = {
+    show,
+    hide,
+    remove,
+    color: '#ffff00'
+  }
+
+  const gui = new dat.GUI()
+  gui.add(guiSetting, 'show').name('显示')
+  gui.add(guiSetting, 'hide').name('隐藏')
+  gui.add(guiSetting, 'remove').name('移除')
+  gui.addColor(guiSetting, 'color').onChange(v => {})
+</script>
+</html>

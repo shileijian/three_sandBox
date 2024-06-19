@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+
+// 添加轨道控制器
+const controls = viewer.controls
+// 设置带阻尼的惯性
+controls.enableDamping = true;
+// 设置阻尼系数
+controls.dampingFactor = 0.05;
+// 设置旋转速度
+// controls.autoRotate = true;
+controls.target.set(0, 1.2, 0);
+// 禁用平移
+controls.enablePan = false;
+// 设置最小距离
+controls.minDistance = 3;
+// 设置最大距离
+controls.maxDistance = 5;
+// 设置垂直的最小角度
+controls.minPolarAngle = Math.PI / 2 - Math.PI / 12;
+// 设置垂直的最大角度
+controls.maxPolarAngle = Math.PI / 2;
+
+// 设置水平的最小角度
+controls.minAzimuthAngle = Math.PI / 2 - Math.PI / 12;
+// 设置水平的最大角度
+controls.maxAzimuthAngle = Math.PI / 2 + Math.PI / 12;
+
+const gui = new dat.GUI()
+
+</script>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+  <div id="domTest" style="width: 100px;height: 40px;background: #ffffff;">1111</div>
+  <div id="domTest1" style="width: 50px;height: 40px;background: #000;">1111</div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+  const sprite = viewer.geometry.createDom3d({
+    id: 'dom*',
+    dom: document.getElementById('domTest'),
+    scale: 0.3,
+    position: {x:0,y:0,z:0}
+  })
+  viewer.add(sprite)
+  // const sprite1 = viewer.geometry.createDom({
+  //   id: 'dom*',
+  //   dom: document.getElementById('domTest1')
+  // })
+  // viewer.add(sprite1)
+
+  const show = () => {
+    viewer.show('dom*')
+  }
+  const hide = () => {
+    viewer.hide('dom*')
+  }
+  const remove = () => {
+    viewer.remove('dom*')
+  }
+
+  const guiSetting = {
+    show,
+    hide,
+    remove
+  }
+
+  const gui = new dat.GUI()
+  gui.add(guiSetting, 'show').name('显示')
+  gui.add(guiSetting, 'hide').name('隐藏')
+  gui.add(guiSetting, 'remove').name('移除')
+</script>
+</html>

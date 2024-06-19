@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<body>
+	<div id="threeContainer"></div>
+	<div id="myDiv" class="css3d-object">Hello, Three.js!</div>
+</body>
+<script type="importmap">
+    {
+    "imports": {
+        "three": "https://unpkg.com/three@0.153.0/build/three.module.js"
+    }
+    }
+</script>
+<script type="module">
+import * as THREE from 'three';
+// 创建场景
+var scene = new THREE.Scene();
+
+// 创建相机
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 50;
+
+// 创建渲染器
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+class CustomSinCurve extends THREE.Curve {
+
+constructor( scale = 1 ) {
+
+  super();
+
+  this.scale = scale;
+
+}
+
+getPoint( t, optionalTarget = new THREE.Vector3() ) {
+
+  const tx = t * 3 - 1.5;
+  const ty = Math.sin( 2 * Math.PI * t );
+  const tz = 0;
+  return optionalTarget.set( tx, ty, tz ).multiplyScalar( this.scale );
+
+}
+
+}
+
+const _positions = [
+  { x:0,y:0,z:0 },
+  { x:10, y: 0, z: 0 },
+  { x:0, y: 10, z: 10 },
+]
+
+const curve = new THREE.CatmullRomCurve3(_positions, false,'catmullrom',0.1)
+
+new CustomSinCurve( 10 )
+
+// const path = new CustomSinCurve( 10 );
+const geometry = new THREE.TubeGeometry( curve, 20, 2, 8, false );
+const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const mesh = new THREE.Mesh( geometry, material );
+scene.add( mesh );
+
+
+// 渲染循环
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+animate();
+
+</script>
+</head>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+    "rotation": {
+        "x": -10.115583976703284,
+        "y": -1.08810836631434,
+        "z": -0.19411457085478698
+    },
+    "position": {
+        "x": -0.03494639535424141,
+        "y": 0.32315469711600087,
+        "z": 1.8113264076324926
+    }
+    }
+  })
+
+
+// 创建纹理加载器
+let textureLoader = new THREE.TextureLoader();
+// 加载纹理
+// let texture = textureLoader.load("./texture/filter/minecraft.png");
+let texture = textureLoader.load("./texture/brick/brick_diffuse.jpg");
+// let texture = textureLoader.load("./texture/rain.png");
+let planeGeometry = new THREE.PlaneGeometry(1, 1);
+let planeMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  map: texture,
+  // 允许透明
+  transparent: true,
+});
+// planeMaterial.map = texture;
+let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+viewer.scene.add(plane);
+
+// texture.flipY = false;
+// texture.flipY = true;
+
+texture.colorSpace = THREE.SRGBColorSpace;
+// 场景背景
+// scene.background = new THREE.Color(0xffffff);
+// 直接取映射到的最近的像素
+// texture.magFilter = THREE.NearestFilter;
+// 取映射到的最近的四个像素的平均值
+// texture.magFilter = THREE.LinearFilter;
+
+// texture.minFilter = THREE.NearestFilter;
+// texture.minFilter = THREE.LinearFilter;
+texture.minFilter = THREE.LinearMipMapLinearFilter;
+// texture.minFilter = THREE.LinearMipMapNearestFilter;
+// texture.minFilter = THREE.NearestMipMapLinearFilter;
+// texture.minFilter = THREE.NearestMipMapNearestFilter;
+
+// texture.generateMipmaps = false;
+
+// 获取各项异性的最大值
+let maxAnisotropy = viewer.renderer.capabilities.getMaxAnisotropy();
+texture.anisotropy = 4;
+console.log(maxAnisotropy);
+
+
+const gui = new dat.GUI()
+gui.add(texture, 'anisotropy').min(1).max(maxAnisotropy).onChange(() => {
+    texture.needsUpdate = true;
+  });
+
+</script>
+</html>

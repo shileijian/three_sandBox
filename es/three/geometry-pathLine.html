@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+		<script src="/three/config/loacl.js"></script>
+<body>
+	<div id="threeContainer"></div>
+</body>
+</head>
+<script type="module">
+  window.viewer = new slj3d('threeContainer',{
+    camera: {
+      "rotation": {
+        "x": -59.814276356565315,
+        "y": -3.6601045821335503,
+        "z": -6.262952371954926
+      },
+      "position": {
+          "x": -4.9674240430995305,
+          "y": 67.12493414127927,
+          "z": 39.045256760532695
+      }
+    }
+  })
+  const shader = viewer.shaderLibrary.flowLine({
+      src: '/images/line1.png',
+      speed: 10
+    })
+  const line = viewer.geometry.createPathLine({
+    id: 'line*',
+    material:  shader,
+    width: 1,
+    // material: { 
+    //   color: '#ffff00'
+    // },
+    positions: [
+      {x: 0,y: 0,z:0},
+      {x: 20,y: 0,z:20},
+      {x: 0,y: 0,z:30},
+    ],
+  })
+  viewer.add(line)
+
+  
+
+  line.click((data) => {
+    console.log('click',data)
+  })
+  line.rightClick((data) => {
+    console.log('rightClick',data)
+  })
+  const show = () => {
+    viewer.show('line*')
+  }
+  const hide = () => {
+    viewer.hide('line*')
+  }
+  const remove = () => {
+    viewer.remove('line*')
+  }
+
+  const guiSetting = {
+    show,
+    hide,
+    remove,
+  }
+
+  const gui = new dat.GUI()
+  gui.add(guiSetting, 'show').name('显示')
+  gui.add(guiSetting, 'hide').name('隐藏')
+  gui.add(guiSetting, 'remove').name('移除')
+</script>
+</html>
